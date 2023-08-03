@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <link href="/css/cart.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row d-flex justify-content-between">
+            <div class="col-sm-3">
+                <a href="/manage"><img class="img-logo" src="/img/logo.png" /></a>
+            </div>
+            <div class="col-sm-3 mt-4">
+                <div class="dropdown">
+                    <a href="/cart"><i class="bi bi-cart"
+                            style="font-size: 40px; text-decoration: none; color: black; margin-right: 40px;"></i></a>
+                    <i class="bi bi-person-circle" style="font-size: 40px;"></i>
+                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="border: 0;">
+                        {{user.name}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        {{#checkAdmin user.role}}
+                        <li><a class="dropdown-item" href="/product">Danh sách sản phẩm</a></li>
+                        <li><a class="dropdown-item" href="/hoadon">Quản lý đơn hàng</a></li>
+                        <li><a class="dropdown-item" href="/thongke">Thống kê</a></li>
+                        <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                        {{else}}
+                        <li><a class="dropdown-item" href="/hoadon">Xem hóa đơn</a></li>
+                        <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                        {{/checkAdmin}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <section class="h-100 gradient-custom">
+                <div class="container py-5">
+                    <div class="row d-flex justify-content-center my-4">
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="mb-0">Cart - {{size}} items</h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Single item -->
+                                    <div class="row">
+                                        {{#each product}}
+                                        <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                            <!-- Image -->
+                                            <div class="bg-image hover-overlay hover-zoom ripple rounded"
+                                                data-mdb-ripple-color="light">
+                                                <img src="data:{{img.contentType}};base64,{{img.data}}" class="w-100" />
+                                                <a href="#!">
+                                                    <div class="mask"
+                                                        style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                                </a>
+                                            </div>
+                                            <!-- Image -->
+                                        </div>
+
+                                        <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                            <!-- Data -->
+                                            <p><strong>{{name}}</strong></p>
+                                            <p>Brand: {{brand}}</p>
+                                            <p style="color: red;">Giá: {{price}}đ</p>
+                                            <button type="button" onclick="removeItemInCart(`{{_id}}`)"
+                                                class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                                title="Move to the wish list">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                            <!-- Data -->
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                            <!-- Quantity -->
+                                            <div class="d-flex mb-4" style="max-width: 300px">
+                                                <button class="btn btn-primary px-3 me-2"
+                                                    onclick="giamQuantity(`{{price}}`,`{{@index}}`)">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+
+                                                <div class="form-outline">
+                                                    <input id="form1" min="1" step="1" name="quantity" value="1"
+                                                        type="number" class="form-control" disabled
+                                                        onchange="tinhTien(`{{price}}`)" />
+                                                    <label class="form-label" for="form1">Quantity</label>
+                                                </div>
+
+                                                <button class="btn btn-primary px-3 ms-2"
+                                                    onclick="tangQuantity(`{{price}}`,`{{@index}}`)">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </button>
+                                            </div>
+                                            <!-- Quantity -->
+
+                                            <!-- Price -->
+                                            <p class="text-start text-md-center">
+                                                <strong style="color: red;" name="price">{{price}}đ</strong>
+                                            </p>
+                                            <!-- Price -->
+                                        </div>
+                                        {{/each}}
+                                    </div>
+                                    <!-- Single item -->
+                                    <hr class="my-4" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="mb-0">Summary</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li
+                                            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                            <div>
+                                                <strong>Total amount</strong>
+                                            </div>
+                                            <span><strong id="total">{{total}}</strong></span>
+                                        </li>
+                                    </ul>
+                                    <button type="button" onclick="thanhToan()"
+                                        class="btn btn-primary btn-lg btn-block">
+                                        Thanh toán
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="/script/cart.js"></script>
+</body>
+
+</html>
