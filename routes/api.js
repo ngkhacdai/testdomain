@@ -63,6 +63,7 @@ router.post('/addToCart/:id' , async (req, res) => {
 router.post('/login', async (req, res) => {
     const body = req.body;
     const a = await userSchema.findOne({ email: body.username, password: body.password });
+    console.log(body);
     res.send(a);
 })
 
