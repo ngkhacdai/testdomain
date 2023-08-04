@@ -153,6 +153,12 @@ router.post('/thanhtoan',async (req, res) =>{
     })
 })
 
+router.post('/testthanhtoan',async (req, res) =>{
+    const listQ = req.body.list;
+    console.log(listQ);
+})
+
+
 router.post('/getAllOrderByID',async (req, res) => {
     await orderSchema.find({_id: req.body.id}).sort({date: 1}).then((order) => {
         res.send(order);
