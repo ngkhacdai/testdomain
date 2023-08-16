@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 8080;
+const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://ngkhacdai:a012675921@assignmentmob402.mbfbglm.mongodb.net/shoplaptop');
@@ -56,7 +57,7 @@ app.engine('hbs', expressHbs.engine({
 
     }
 }));
-
+app.use(cors())
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
